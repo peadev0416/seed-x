@@ -1,0 +1,49 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# FastAPI logs and runtime files
+*.log
+
+# Sampled image outputs
+app/sampled_images/
+
+# Local environment variables
+.env
+.env.*
+
+# IDE/editor configs
+.vscode/
+.idea/
+
+# Python tooling
+.mypy_cache/
+.pytest_cache/
+.dmypy.json
+.coverage
+coverage.xml
+
+# Docker-related
+*.pid
+*.tar
+*.gz
+*.bak
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# OS/system files
+.DS_Store
+Thumbs.db
+
+/sampled_images
+session_data.csv
