@@ -17,7 +17,6 @@ app/sampled_images/
 
 # Local environment variables
 .env
-.env.*
 
 # IDE/editor configs
 .vscode/
