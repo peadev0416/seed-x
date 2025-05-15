@@ -15,11 +15,8 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY app ./app
-
-# For evnironment variables
-COPY .env.example .env
+# Copy all application code including frontend
+COPY . .
 
 # Expose FastAPI port
 EXPOSE 8000
