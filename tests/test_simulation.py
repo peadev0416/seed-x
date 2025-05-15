@@ -8,13 +8,13 @@ if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 BASE_URL = "http://localhost:8000"
-TOTAL_USERS = 100
-IMAGES_PER_USER = 20
+TOTAL_SORTERS = 100
+IMAGES_PER_SORTER = 20
 CONCURRENCY_LIMIT = 20
 
 semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
 
-async def simulate_user(seed_lot_name: str, client: httpx.AsyncClient):
+async def simulate_sorter(seed_lot_name: str, client: httpx.AsyncClient):
     async with semaphore:
         try:
             response = await client.post(f"{BASE_URL}/start-session", json={"seed_lot": seed_lot_name})
@@ -22,7 +22,7 @@ async def simulate_user(seed_lot_name: str, client: httpx.AsyncClient):
             session_id = session_info.get("session_id")
             print(f"[{seed_lot_name}] Started session: {session_id}")
 
-            for i in range(IMAGES_PER_USER):
+            for i in range(IMAGES_PER_SORTER):
                 image_id = f"{seed_lot_name}_img_{i}_{uuid.uuid4().hex[:6]}"
                 await client.post(f"{BASE_URL}/send-image", json={
                     "session_id": session_id,
@@ -46,10 +46,10 @@ async def simulate_user(seed_lot_name: str, client: httpx.AsyncClient):
             print(f"[{seed_lot_name}] Error: {repr(e)}")
 
 async def main():
-    seed_lots = [f"Lot_{i+1}" for i in range(TOTAL_USERS)]
+    seed_lots = [f"Lot_{i+1}" for i in range(TOTAL_SORTERS)]
     limits = httpx.Limits(max_keepalive_connections=100, max_connections=200)
     async with httpx.AsyncClient(limits=limits) as client:
-        await asyncio.gather(*(simulate_user(seed_lot, client) for seed_lot in seed_lots))
+        await asyncio.gather(*(simulate_sorter(seed_lot, client) for seed_lot in seed_lots))
 
 if __name__ == "__main__":
     asyncio.run(main())
